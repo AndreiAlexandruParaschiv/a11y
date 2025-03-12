@@ -2,11 +2,12 @@
   "name": "a11y",
   "version": "1.0.0",
   "description": "Accessibility testing tool",
-  "main": "index.js",
+  "main": "axecore.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "audit": "node index.js"
+    "axecore": "node axecore.js",
+    "pa11y": "node pa11y.js"
   },
   "repository": {
     "type": "git",
@@ -17,6 +18,7 @@
     "axe-core": "4.10.2",
     "chalk": "5.4.1",
     "csv-writer": "1.6.0",
+    "pa11y": "^6.2.3",
     "puppeteer": "24.3.0"
   }
 }

@@ -333,14 +333,26 @@ async function runAccessibilityChecks() {
   // Create results directory if it doesn't exist
   ensureDirectoryExists(config.output.directory);
 
+  // Check if URL is provided as command line argument
+  const urls = process.argv.length > 2 ? [process.argv[2]] : config.urls;
+
+  if (!urls || urls.length === 0) {
+    console.error(
+      chalk.red(
+        'No URLs specified. Please add URLs to config.js or provide a URL as a command line argument.'
+      )
+    );
+    process.exit(1);
+  }
+
   console.log(
-    chalk.blue(`Starting accessibility checks for ${config.urls.length} URLs`)
+    chalk.blue(`Starting accessibility checks for ${urls.length} URL(s)`)
   );
 
   const summary = [];
 
   // Process each URL
-  for (const url of config.urls) {
+  for (const url of urls) {
     const result = await checkAccessibility(url);
     summary.push(result);
   }
@@ -351,7 +363,6 @@ async function runAccessibilityChecks() {
   console.log(
     chalk.yellow(
       'URL'.padEnd(40) +
-        'Status'.padEnd(12) +
         'Violations'.padEnd(12) +
         'Critical'.padEnd(12) +
         'Serious'.padEnd(12) +
@@ -362,34 +373,39 @@ async function runAccessibilityChecks() {
 
   summary.forEach((result) => {
     if (result.error) {
-      console.log(
-        result.url.padEnd(40) +
-          chalk.red('Error'.padEnd(12)) +
-          'N/A'.padEnd(12) +
-          'N/A'.padEnd(12) +
-          'N/A'.padEnd(12) +
-          'N/A'
-      );
+      console.log(result.url.padEnd(40) + chalk.red('Error: ' + result.error));
     } else {
+      const violationsStr =
+        result.violations > 0
+          ? chalk.red(String(result.violations).padEnd(12))
+          : chalk.green(String(result.violations).padEnd(12));
+
+      const criticalStr =
+        result.violationsByCategory.critical > 0
+          ? chalk.red(
+              String(result.violationsByCategory.critical || 0).padEnd(12)
+            )
+          : chalk.green(
+              String(result.violationsByCategory.critical || 0).padEnd(12)
+            );
+
+      const seriousStr =
+        result.violationsByCategory.serious > 0
+          ? chalk.yellow(
+              String(result.violationsByCategory.serious || 0).padEnd(12)
+            )
+          : chalk.green(
+              String(result.violationsByCategory.serious || 0).padEnd(12)
+            );
+
+      const incompleteStr = chalk.yellow(String(result.incomplete));
+
       console.log(
         result.url.padEnd(40) +
-          chalk.green('Success'.padEnd(12)) +
-          (result.violations > 0
-            ? chalk.red(String(result.violations).padEnd(12))
-            : chalk.green(String(result.violations).padEnd(12))) +
-          (result.violationsByCategory.critical > 0
-            ? chalk.red(String(result.violationsByCategory.critical).padEnd(12))
-            : chalk.green(
-                String(result.violationsByCategory.critical || 0).padEnd(12)
-              )) +
-          (result.violationsByCategory.serious > 0
-            ? chalk.yellow(
-                String(result.violationsByCategory.serious).padEnd(12)
-              )
-            : chalk.green(
-                String(result.violationsByCategory.serious || 0).padEnd(12)
-              )) +
-          chalk.yellow(String(result.incomplete))
+          violationsStr +
+          criticalStr +
+          seriousStr +
+          incompleteStr
       );
     }
   });
@@ -410,21 +426,8 @@ async function runAccessibilityChecks() {
   console.log(chalk.green('\nAll accessibility checks completed!'));
 }
 
-// Check if URLs are provided in config, otherwise use command line argument
-if (process.argv.length > 2) {
-  // If URL is provided as command line argument, run single check
-  const url = process.argv[2];
-  config.urls = [url];
-  runAccessibilityChecks().then(() => process.exit(0));
-} else if (config.urls && config.urls.length > 0) {
-  // Run checks for all URLs in config
-  runAccessibilityChecks().then(() => process.exit(0));
-} else {
-  console.error(
-    chalk.red(
-      'No URLs provided. Please add URLs to config.js or provide a URL as a command line argument.'
-    )
-  );
-  console.log('Usage: npm run check -- https://example.com');
+// Run the checks
+runAccessibilityChecks().catch((error) => {
+  console.error(chalk.red('Error running accessibility checks:'), error);
   process.exit(1);
-}
+});

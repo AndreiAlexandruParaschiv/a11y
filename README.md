@@ -1,14 +1,15 @@
 # Accessibility a11y
 
-A tool for running accessibility audits on websites using axe-core and Puppeteer, focusing on WCAG compliance.
+A comprehensive accessibility testing tool that uses both axe-core and Pa11y to audit websites for WCAG compliance.
 
 ## Features
 
 - Run accessibility audits on multiple URLs from a configuration file
-- Configure axe-core settings for consistent results between runs
+- Use two different accessibility testing engines (axe-core and Pa11y)
+- Configure settings for consistent results between runs
 - Focus on the most important WCAG compliance checks (A and AA levels)
 - Generate detailed CSV reports with violation information
-- Categorize violations by impact level (Critical, Serious)
+- Categorize issues by impact level
 - Provide a comprehensive summary in the console
 
 ## Installation
@@ -72,25 +73,41 @@ export default {
 };
 ```
 
-### Running the Audit
+### Running the Audits
 
-Run the audit using the configuration file:
+#### Using axe-core
+
+Run the audit using axe-core:
 
 ```bash
-npm run audit
+npm run axecore
 ```
 
-Or check a single URL from the command line:
+Or check a single URL with axe-core:
 
 ```bash
-npm run check -- https://example.com
+npm run axecore -- https://example.com
+```
+
+#### Using Pa11y
+
+Run the audit using Pa11y:
+
+```bash
+npm run pa11y
+```
+
+Or check a single URL with Pa11y:
+
+```bash
+npm run pa11y -- https://example.com
 ```
 
 ## Understanding the Results
 
-### Console Output
+### axe-core Results
 
-The tool provides a detailed console output with:
+The axe-core tool provides:
 
 1. **Accessibility Check Results** for each URL:
 
@@ -104,20 +121,38 @@ The tool provides a detailed console output with:
    - Breakdown by impact category (Critical, Serious)
    - Number of items needing review
 
-### CSV Report
+### Pa11y Results
 
-A detailed CSV report is generated for each URL with the following information:
+The Pa11y tool provides:
 
-- Type (Violation or Needs Review)
-- Impact level (Critical, Serious)
-- Description of the issue
-- Help text and URL for more information
-- Rule ID
-- WCAG criteria
-- HTML element causing the violation
-- Failure summary
+1. **Accessibility Check Results** for each URL:
 
-Reports are saved in the `results` directory with a timestamp in the filename.
+   - List of issues with type, code, and message
+   - HTML context and selector for each issue
+   - Information about which tool detected the issue (axe or HTML CodeSniffer)
+
+2. **Accessibility Audit Summary**:
+   - Table showing all URLs checked
+   - Number of issues found
+   - Breakdown by issue type (Errors, Warnings)
+
+### CSV Reports
+
+Both tools generate detailed CSV reports with timestamps in the filename. These reports include:
+
+- **axe-core**: Violations with impact level, description, WCAG criteria, and affected elements
+- **Pa11y**: Issues with type, code, message, HTML context, and selector
+
+Reports are saved in the `results` directory.
+
+## Why Use Both Tools?
+
+Using both axe-core and Pa11y provides more comprehensive coverage:
+
+1. **axe-core**: Focuses on reliable, automated testing with minimal false positives
+2. **Pa11y**: Combines multiple testing engines (axe and HTML CodeSniffer) for broader coverage
+
+By using both tools, you can catch more accessibility issues and ensure better WCAG compliance.
 
 ## Understanding WCAG Tags
 
@@ -135,20 +170,16 @@ Individual criteria are referenced with more specific tags:
 
 ## Addressing Inconsistent Results
 
-Axe-core can sometimes produce inconsistent results between runs due to:
+Accessibility testing tools can sometimes produce inconsistent results between runs due to:
 
 1. **Dynamic Content**: Websites with dynamic content that changes between page loads
 2. **Timing Issues**: Elements that appear or change based on timing
-3. **Random Rule Order**: By default, axe-core may run rules in a non-deterministic order
+3. **Random Rule Order**: By default, some tools may run rules in a non-deterministic order
 4. **Browser State**: Different browser states can affect how elements are rendered
 
 This tool addresses these issues by:
 
-1. Adding consistent configuration to axe-core
+1. Adding consistent configuration to the testing engines
 2. Waiting for the page to stabilize before running tests
 3. Setting a consistent environment for testing
 4. Using specific WCAG rules focused on compliance
-
-## License
-
-This project is licensed under the MIT License.
