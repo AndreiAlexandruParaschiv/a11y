@@ -1,12 +1,12 @@
 {
   "name": "a11y",
   "version": "1.0.0",
-  "description": "",
+  "description": "Accessibility testing tool",
   "main": "index.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "check": "node index.js"
+    "audit": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -14,9 +14,9 @@
   },
   "private": true,
   "dependencies": {
-    "axe-core": "^4.10.2",
-    "chalk": "^5.4.1",
-    "csv-writer": "^1.6.0",
-    "puppeteer": "^24.3.0"
+    "axe-core": "4.10.2",
+    "chalk": "5.4.1",
+    "csv-writer": "1.6.0",
+    "puppeteer": "24.3.0"
   }
 }
