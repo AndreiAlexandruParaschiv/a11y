@@ -156,30 +156,11 @@ By using both tools, you can catch more accessibility issues and ensure better W
 
 ## Understanding WCAG Tags
 
-The WCAG tags in the results (like `wcag2a`, `wcag244`, `wcag412`) refer to:
+The WCAG tags in the results refer to:
 
 - `wcag2a` - All WCAG 2.0 Level A success criteria
 - `wcag2aa` - All WCAG 2.0 Level AA success criteria
 - `wcag21a` - All WCAG 2.1 Level A success criteria
 - `wcag21aa` - All WCAG 2.1 Level AA success criteria
-
-Individual criteria are referenced with more specific tags:
-
-- `wcag244` - Success Criterion 2.4.4 (Link Purpose)
-- `wcag412` - Success Criterion 4.1.2 (Name, Role, Value)
-
-## Addressing Inconsistent Results
-
-Accessibility testing tools can sometimes produce inconsistent results between runs due to:
-
-1. **Dynamic Content**: Websites with dynamic content that changes between page loads
-2. **Timing Issues**: Elements that appear or change based on timing
-3. **Random Rule Order**: By default, some tools may run rules in a non-deterministic order
-4. **Browser State**: Different browser states can affect how elements are rendered
-
-This tool addresses these issues by:
-
-1. Adding consistent configuration to the testing engines
-2. Waiting for the page to stabilize before running tests
-3. Setting a consistent environment for testing
-4. Using specific WCAG rules focused on compliance
+- `wcag22a` - All WCAG 2.2 Level A success criteria
+- `wcag22aa` - All WCAG 2.2 Level AA success criteria

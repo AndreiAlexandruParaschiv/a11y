@@ -16,6 +16,8 @@ export default {
         'wcag2aa',
         'wcag21a',
         'wcag21aa',
+        'wcag22a',
+        'wcag22aa',
       ],
     },
     // Set to true to ensure consistent results between runs
