@@ -44,11 +44,12 @@ export default {
     runOnly: {
       type: 'tag',
       values: [
-        // WCAG 2.0 and 2.1 Level A & AA (most important for compliance)
         'wcag2a',
         'wcag2aa',
         'wcag21a',
         'wcag21aa',
+        'wcag22a', 
+        'wcag22aa'
       ],
     },
     // Settings to ensure consistent results
@@ -153,14 +154,3 @@ Using both axe-core and Pa11y provides more comprehensive coverage:
 2. **Pa11y**: Combines multiple testing engines (axe and HTML CodeSniffer) for broader coverage
 
 By using both tools, you can catch more accessibility issues and ensure better WCAG compliance.
-
-## Understanding WCAG Tags
-
-The WCAG tags in the results refer to:
-
-- `wcag2a` - All WCAG 2.0 Level A success criteria
-- `wcag2aa` - All WCAG 2.0 Level AA success criteria
-- `wcag21a` - All WCAG 2.1 Level A success criteria
-- `wcag21aa` - All WCAG 2.1 Level AA success criteria
-- `wcag22a` - All WCAG 2.2 Level A success criteria
-- `wcag22aa` - All WCAG 2.2 Level AA success criteria
